@@ -2,7 +2,8 @@ name: Github JS Test
 
 on:
   workflow_dispatch:
-
+  push:
+    branches: [main]
 jobs:
   tests:
     timeout-minutes: 15
@@ -42,9 +43,22 @@ jobs:
 
       - name: Install Dependencies
         run: pnpm install --frozen-lockfile
-
+      - name: Prepare Job Status if success
+        if: job.status == 'success'
+        id: slack-prepare-success
+        run: |
+          echo "JOBSTATUS=success" >> $GITHUB_ENV
+      - name: Fail intentionally  
+        run: |
+          exit 1
+      - name: Prepare Job Status if failure
+        if: failure()
+        id: slack-prepare-failure
+        run: |
+          echo "JOBSTATUS2=failure" >> $GITHUB_ENV
       - name: Notify Dependencies
         if: always()
         run: pnpm testjs
         env:
+          GHUB: ${{ GITHUBENV }}
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_CI_CHANNEL }}
