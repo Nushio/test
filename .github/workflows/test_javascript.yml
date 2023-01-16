@@ -60,5 +60,5 @@ jobs:
         if: always()
         run: pnpm testjs
         env:
-          GHUB: ${{ GITHUBENV }}
+          GHUB: ${{ env }}
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_CI_CHANNEL }}
