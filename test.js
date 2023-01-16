@@ -6,6 +6,9 @@ import * as github from "@actions/github";
 if (github.context.eventName === "push") {
   const pushPayload = github.context.payload;
   core.info(`The head commit is: ${pushPayload.head_commit}`);
+  console.log(github.context);
+  console.log(github.context.payload);
+  console.log(github.context.payload.head_commit);
 }
 
 // Send the message to Slack via a webhook
