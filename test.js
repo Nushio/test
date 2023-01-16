@@ -23,8 +23,9 @@ let slackMessage = {
           process.env.JOBSTATUS === "success" ? successMessage : failureMessage
         }.\n\n:point_right: Triggered by: ${triggeredBy}\n:clipboard: Last commit message: ${lastCommitMessage}\n\n:github: Github Build Logs: ${githubLogsURL}\n\n
         ${
-          process.env.JOBSTATUS === "failure" ??
-          "Pinging @U029HJM1JV9 so he can take a look."
+          process.env.JOBSTATUS === "failure"
+            ? "Pinging @U029HJM1JV9 so he can take a look."
+            : ""
         }`,
       },
     },
