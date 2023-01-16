@@ -1,31 +1,21 @@
 import fetch from "node-fetch";
 
-import * as core from "@actions/core";
-import * as github from "@actions/github";
-
-if (github.context.eventName === "push") {
-  const pushPayload = github.context.payload;
-  core.info(`The head commit is: ${pushPayload.head_commit}`);
-  console.log(github.context);
-  console.log(github.context.payload);
-  console.log(github.context.payload.head_commit);
-}
-
 // Send the message to Slack via a webhook
 const slackWebhookURL = process.env.SLACK_WEBHOOK_URL;
-console.log(process.env.GHUB);
-console.log(process.env);
 
-// GITHUB_TRIGGERING_ACTOR
-const processEnv = process.env;
+const jobstatus = process.env.JOBSTATUS;
+const triggeredBy = process.env.GITHUB_TRIGGERING_ACTOR;
+const title = process.env.TITLE;
+const lastCommitMessage = process.env.LAST_COMMIT_MESSAGE;
+const githubLogsURL = `https://api.github.com/repos/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}/`;
 let slackMessage = {
-  text: ":lab_coat: Testing...",
+  text: `${title}`,
   blocks: [
     {
       type: "section",
       text: {
         type: "mrkdwn",
-        text: JSON.stringify(processEnv),
+        text: `Hi everyone! I'm here to let you know that the job \`${title}\` has finished with status \`${jobstatus}\`.\n\nTriggered by: ${triggeredBy}\nLast commit message: ${lastCommitMessage}\n\nLogs: ${githubLogsURL}`,
       },
     },
   ],
