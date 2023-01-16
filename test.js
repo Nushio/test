@@ -4,14 +4,12 @@ import * as github from "@actions/github";
 // Send the message to Slack via a webhook
 const slackWebhookURL = process.env.SLACK_WEBHOOK_URL;
 
-const jobstatus =
-  process.env.JOBSTATUS === "success" ? ":tada: *Success*" : ":fire: *Failure*";
 const triggeredBy = process.env.GITHUB_TRIGGERING_ACTOR;
 const title = process.env.TITLE;
 const lastCommitMessage = github.context.payload.head_commit.message;
 const githubLogsURL = `https://api.github.com/repos/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}/`;
-const successMessage = "";
-const failureMessage = "";
+const successMessage = `:tada: ${title} was succesfully deployed!`;
+const failureMessage = `:exclamation: ${title} failed to deploy. Don't Panic! Check the logs for more details.`;
 let slackMessage = {
   text: `${title}`,
   blocks: [
