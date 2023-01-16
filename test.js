@@ -11,7 +11,9 @@ const githubLogsURL = `https://api.github.com/repos/${process.env.GITHUB_REPOSIT
 const successMessage = `:tada: ${title} was succesfully deployed!`;
 const failureMessage = `:exclamation: ${title} failed to deploy. Don't Panic! Check the logs for more details.`;
 let slackMessage = {
-  text: `${title}`,
+  text: `${
+    process.env.JOBSTATUS === "success" ? ":tada:" : ":exclamation:"
+  } ${title}`,
   blocks: [
     {
       type: "section",
@@ -19,7 +21,10 @@ let slackMessage = {
         type: "mrkdwn",
         text: `${
           process.env.JOBSTATUS === "success" ? successMessage : failureMessage
-        }.\n\n:writing_hand: *Triggered by: ${triggeredBy}\n:clipboard: *Last commit message: ${lastCommitMessage}\n\n:github: *Github Build Logs: ${githubLogsURL}`,
+        }.\n\n:writing_hand: *Triggered by: ${triggeredBy}\n:clipboard: *Last commit message: ${lastCommitMessage}\n\n:github: *Github Build Logs: ${githubLogsURL}${
+          process.env.JOBSTATUS === "failure" ??
+          "Pinging @U029HJM1JV9 so he can take a look."
+        }`,
       },
     },
   ],

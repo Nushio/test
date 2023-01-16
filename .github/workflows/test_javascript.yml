@@ -50,7 +50,7 @@ jobs:
           echo "JOBSTATUS=success" >> $GITHUB_ENV
       - name: Fail intentionally  
         run: |
-          exit 0
+          exit 1
       - name: Prepare Job Status if failure
         if: failure()
         id: slack-prepare-failure
@@ -60,5 +60,5 @@ jobs:
         if: always()
         run: pnpm testjs
         env:
-          TITLE: ":labcoat: test"
+          TITLE: "Job Title"
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_CI_CHANNEL }}
