@@ -3,7 +3,7 @@ import fetch from "node-fetch";
 // Send the message to Slack via a webhook
 const slackWebhookURL = process.env.SLACK_WEBHOOK_URL;
 console.log(process.env);
-const processEnv = processEnv;
+const processEnv = process.env;
 let slackMessage = {
   text: ":lab_coat: Testing...",
   blocks: [
@@ -16,6 +16,7 @@ let slackMessage = {
     },
   ],
 };
+console.log(slackMessage);
 await fetch(slackWebhookURL, {
   method: "POST",
   headers: {
