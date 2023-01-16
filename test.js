@@ -1,13 +1,17 @@
 import fetch from "node-fetch";
+import * as github from "@actions/github";
 
 // Send the message to Slack via a webhook
 const slackWebhookURL = process.env.SLACK_WEBHOOK_URL;
 
-const jobstatus = process.env.JOBSTATUS;
+const jobstatus =
+  process.env.JOBSTATUS === "success" ? ":tada: *Success*" : ":fire: *Failure*";
 const triggeredBy = process.env.GITHUB_TRIGGERING_ACTOR;
 const title = process.env.TITLE;
-const lastCommitMessage = process.env.LAST_COMMIT_MESSAGE;
+const lastCommitMessage = github.context.payload.head_commit.message;
 const githubLogsURL = `https://api.github.com/repos/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}/`;
+const successMessage = "";
+const failureMessage = "";
 let slackMessage = {
   text: `${title}`,
   blocks: [
@@ -15,7 +19,9 @@ let slackMessage = {
       type: "section",
       text: {
         type: "mrkdwn",
-        text: `Hi everyone! I'm here to let you know that the job \`${title}\` has finished with status \`${jobstatus}\`.\n\nTriggered by: ${triggeredBy}\nLast commit message: ${lastCommitMessage}\n\nLogs: ${githubLogsURL}`,
+        text: `${
+          process.env.JOBSTATUS === "success" ? successMessage : failureMessage
+        }.\n\n:writing_hand: *Triggered by: ${triggeredBy}\n:clipboard: *Last commit message: ${lastCommitMessage}\n\n:github: *Github Build Logs: ${githubLogsURL}`,
       },
     },
   ],
