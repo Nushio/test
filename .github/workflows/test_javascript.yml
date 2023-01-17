@@ -53,7 +53,7 @@ jobs:
         run: echo "JOBSTATUS=failure" >> $GITHUB_ENV
       - name: Notify CI
         if: always()
-        run: node .github/scripts/slack-ci.js
+        run: pnpm testjs
         env:
           TITLE: "Job Title"
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_CI_CHANNEL }}
