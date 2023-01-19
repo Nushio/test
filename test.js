@@ -1,5 +1,5 @@
-import fetch from "node-fetch";
-import * as github from "@actions/github";
+const fetch = require("node-fetch");
+const github = require("@actions/github");
 
 // Send the message to Slack via a webhook
 const slackWebhookURL = process.env.SLACK_WEBHOOK_URL;
